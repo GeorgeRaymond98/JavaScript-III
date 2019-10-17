@@ -10,29 +10,60 @@
   
 /*
   === GameObject ===
-  * createdAt
-  * name
-  * dimensions (These represent the character's size in the video game)
-  * destroy() // prototype method that returns: `${this.name} was removed from the game.`
+  * createdAt  (DONE)
+  * name  (DONE)
+  * dimensions (These represent the character's size in the video game)  (DONE)
+  * destroy() // prototype method that returns: `${this.name} was removed from the game.`  (DONE)
 */
+function gameObject(gameAttributes) {
+  this.createdAt = gameAttributes.createdAt,
+  this.name = gameAttributes.name,
+  this.dimensions = gameAttributes.dimensions
+}
 
+gameObject.prototype.destroy = function(){
+  return `${this.name} was removed from the game`;
+}
 /*
   === CharacterStats ===
-  * healthPoints
-  * takeDamage() // prototype method -> returns the string '<object name> took damage.'
-  * should inherit destroy() from GameObject's prototype
+  * healthPoints (DONE)
+  * takeDamage() // prototype method -> returns the string '<object name> took damage.' (DONE)
+  * should inherit destroy() from GameObject's prototype (DONE)
 */
+ function characterStats(charAttributes) {
+  this.healthPoints = charAttributes.healthPoints,
+  gameObject.call(this, charAttributes)
+ }
 
+ characterStats.prototype = Object.create(gameObject.prototype);
+
+ characterStats.prototype.takeDamage = function(){
+   return `${this.name} took damage`;
+ }
+ 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
-  * team
-  * weapons
-  * language
-  * greet() // prototype method -> returns the string '<object name> offers a greeting in <object language>.'
+  * team (DONE)
+  * weapons (DONE)
+  * language (DONE)
+  * greet() // prototype method -> returns the string '<object name> offers a greeting in <object language>.' (DONE)
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
- 
+
+function Humanoid(humnaAttributes) {
+  this.team = humnaAttributes.team,
+  this.weapons = humnaAttributes.weapons,
+  this.language = humnaAttributes.language,
+  characterStats.call(this,humnaAttributes)
+  
+}
+
+Humanoid.prototype = Object.create(characterStats.prototype);
+Humanoid.prototype.greet = function() {
+  return `${this.name} offers a greeting in ${this.language}`;
+}
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -41,7 +72,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -102,7 +133,7 @@
   console.log(archer.greet()); // Lilith offers a greeting in Elvish.
   console.log(mage.takeDamage()); // Bruce took damage.
   console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
